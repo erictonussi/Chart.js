@@ -8726,7 +8726,25 @@ module.exports = function(Chart) {
 			// Before Body
 			var xLinePadding = 0;
 			var fillLineOfText = function(line) {
-				ctx.fillText(line, pt.x + xLinePadding, pt.y);
+				var texts = line.split('<tab>');
+
+				if (texts.length === 2) {
+					var color = ctx.fillStyle;
+					// ctx.fillStyle = '#333';
+					ctx.fillStyle = mergeOpacity(vm.titleFontColor, opacity);
+
+					var localPadding = 0;
+
+					ctx.fillText(texts[0], pt.x + xLinePadding, pt.y);
+					// localPadding += ctx.measureText(texts[i]).width;
+
+					ctx.fillStyle = color;
+					ctx.fillText(texts[1], pt.x + (vm.width - vm.xPadding*2 - ctx.measureText(texts[1]).width), pt.y);
+
+				} else {
+					ctx.fillText(line, pt.x + xLinePadding, pt.y);
+				}
+
 				pt.y += bodyFontSize + bodySpacing;
 			};
 
